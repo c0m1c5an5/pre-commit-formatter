@@ -2,6 +2,6 @@
   "files.trimTrailingWhitespace": false,
   "files.trimFinalNewlines": false,
   "files.insertFinalNewline": false,
-  "pre-commit-vscode.debug": true,
-  "pre-commit-vscode.timeout": 60
+  "pre-commit-formatter.debug": true,
+  "pre-commit-formatter.timeout": 60
 }

@@ -24,7 +24,7 @@ let outputChannel: vscode.OutputChannel;
 const runningFiles = new Set<string>();
 
 function debug(message: string): void {
-  const cfg = vscode.workspace.getConfiguration("pre-commit-vscode");
+  const cfg = vscode.workspace.getConfiguration("pre-commit-formatter");
   if (cfg.get<boolean>("debug", false)) {
     const line = `[pre-commit] ${message}`;
     outputChannel.appendLine(line);
@@ -185,7 +185,7 @@ async function handleSave(document: vscode.TextDocument): Promise<void> {
 
   runningFiles.add(filePath);
   try {
-    const cfg = vscode.workspace.getConfiguration("pre-commit-vscode");
+    const cfg = vscode.workspace.getConfiguration("pre-commit-formatter");
     const executable = cfg.get<string>("executablePath", "pre-commit");
     const timeoutMs = cfg.get<number>("timeout", 60) * 1000;
 

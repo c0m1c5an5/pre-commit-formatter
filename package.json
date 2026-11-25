@@ -1,9 +1,9 @@
 {
-  "name": "pre-commit-vscode",
+  "name": "pre-commit-formatter",
   "publisher": "c0m1c5an5",
-  "displayName": "pre-commit",
+  "displayName": "pre-commit-formatter",
   "description": "Run pre-commit as file formatter",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -17,29 +17,29 @@
   "license": "MIT",
   "author": {
     "name": "Maksym Kondratenko",
-    "email": "m.kondratenko.ua@gmaiol.com",
+    "email": "m.kondratenko.ua@gmail.com",
     "url": "https://github.com/c0m1c5an5"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/c0m1c5an5/pre-commit-vscode"
+    "url": "https://github.com/c0m1c5an5/pre-commit-formatter"
   },
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
       "title": "pre-commit",
       "properties": {
-        "pre-commit-vscode.executablePath": {
+        "pre-commit-formatter.executablePath": {
           "type": "string",
           "default": "pre-commit",
           "description": "Path to the pre-commit executable."
         },
-        "pre-commit-vscode.timeout": {
+        "pre-commit-formatter.timeout": {
           "type": "number",
           "default": 10,
           "description": "Seconds to wait before killing a pre-commit run."
         },
-        "pre-commit-vscode.debug": {
+        "pre-commit-formatter.debug": {
           "type": "boolean",
           "default": false,
           "description": "Write diagnostic messages to the pre-commit Output Channel."

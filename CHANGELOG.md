@@ -1,5 +1,6 @@
 ## 0.0.5
 
+- Change the name to pre-commit-formatter
 - Add VS code marketplace upload
 
 ## 0.0.4
@@ -11,7 +12,7 @@
 ## 0.0.3
 
 - Extension errors are now logged to the "pre-commit" output channel
-- When `pre-commit-vscode.debug` is enabled, pre-commit stdout/stderr is
+- When `pre-commit-formatter.debug` is enabled, pre-commit stdout/stderr is
   included in the output on non-zero exit
 - The default pre-commit timeout is set to 60s instead of 10s
 

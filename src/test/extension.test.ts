@@ -5,7 +5,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as cp from "child_process";
 
-const EXTENSION_ID = "c0m1c5an5.pre-commit-vscode";
+const EXTENSION_ID = "c0m1c5an5.pre-commit-formatter";
 
 // Compiled tests live at out/test/; two levels up reaches the project root.
 const FIXTURES_DIR = path.join(

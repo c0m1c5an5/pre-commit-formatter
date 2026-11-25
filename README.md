@@ -1,4 +1,4 @@
-# pre-commit-vscode
+# pre-commit-formatter
 
 Runs your pre-commit format hooks on save, acting as a VS Code formatter backed by pre-commit.
 
@@ -42,7 +42,7 @@ your workspace settings:
 
 ```json
 {
-  "[python]": { "editor.defaultFormatter": "pre-commit-vscode" }
+  "[python]": { "editor.defaultFormatter": "pre-commit-formatter" }
 }
 ```
 
@@ -50,8 +50,8 @@ your workspace settings:
 
 | Setting                            | Default        | Description                             |
 | ---------------------------------- | -------------- | --------------------------------------- |
-| `pre-commit-vscode.executablePath` | `"pre-commit"` | Path to the pre-commit executable       |
-| `pre-commit-vscode.timeout`        | `60`           | Seconds before killing a pre-commit run |
+| `pre-commit-formatter.executablePath` | `"pre-commit"` | Path to the pre-commit executable       |
+| `pre-commit-formatter.timeout`        | `60`           | Seconds before killing a pre-commit run |
 
 ## Requirements
 
