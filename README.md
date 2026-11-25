@@ -49,7 +49,7 @@ your workspace settings:
 ## Extension Settings
 
 | Setting                            | Default        | Description                             |
-|------------------------------------|----------------|-----------------------------------------|
+| ---------------------------------- | -------------- | --------------------------------------- |
 | `pre-commit-vscode.executablePath` | `"pre-commit"` | Path to the pre-commit executable       |
 | `pre-commit-vscode.timeout`        | `60`           | Seconds before killing a pre-commit run |
 

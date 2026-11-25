@@ -1,26 +1,54 @@
-import typescriptEslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
+import regexp from "eslint-plugin-regexp";
+import security from "eslint-plugin-security";
+import prettier from "eslint-config-prettier";
 
-export default [{
+const allSecurityRulesAsErrors = Object.fromEntries(
+  Object.keys(security.rules).map((rule) => [`security/${rule}`, "error"]),
+);
+
+export default defineConfig([
+  {
+    ignores: ["dist/**", "out/**", ".vscode-test/**"],
+  },
+  {
     files: ["**/*.ts"],
-}, {
-    plugins: {
-        "@typescript-eslint": typescriptEslint.plugin,
-    },
+
+    extends: [
+      tseslint.configs.strictTypeChecked,
+      regexp.configs["flat/recommended"],
+      prettier,
+    ],
+
+    plugins: { security },
 
     languageOptions: {
-        parser: typescriptEslint.parser,
-        ecmaVersion: 2022,
-        sourceType: "module",
+      ecmaVersion: 2022,
+      sourceType: "module",
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
 
     rules: {
-        "@typescript-eslint/naming-convention": ["warn", {
-            selector: "import",
-            format: ["camelCase", "PascalCase"],
-        }],
-        curly: "warn",
-        eqeqeq: "warn",
-        "no-throw-literal": "warn",
-        semi: "warn",
+      ...allSecurityRulesAsErrors,
+      "regexp/no-super-linear-move": "error",
+      "security/detect-unsafe-regex": "error",
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "import",
+          format: ["camelCase", "PascalCase"],
+        },
+      ],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        { allowNumber: true },
+      ],
+      curly: "error",
+      eqeqeq: "error",
     },
-}];
+  },
+]);

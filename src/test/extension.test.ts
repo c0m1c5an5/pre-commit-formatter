@@ -8,7 +8,14 @@ import * as cp from "child_process";
 const EXTENSION_ID = "c0m1c5an5.pre-commit-vscode";
 
 // Compiled tests live at out/test/; two levels up reaches the project root.
-const FIXTURES_DIR = path.join(__dirname, "..", "..", "src", "test", "fixtures");
+const FIXTURES_DIR = path.join(
+  __dirname,
+  "..",
+  "..",
+  "src",
+  "test",
+  "fixtures",
+);
 
 let workspaceDir: string;
 
@@ -76,7 +83,9 @@ async function assertNoBufferChange(doc: vscode.TextDocument): Promise<void> {
 
 suite("pre-commit extension E2E", () => {
   suiteSetup(async () => {
-    workspaceDir = vscode.workspace.workspaceFolders![0].uri.fsPath;
+    const folder = vscode.workspace.workspaceFolders?.[0];
+    assert.ok(folder, "Test runner did not open a workspace folder");
+    workspaceDir = folder.uri.fsPath;
     const ext = vscode.extensions.getExtension(EXTENSION_ID);
     assert.ok(
       ext,
@@ -89,13 +98,16 @@ suite("pre-commit extension E2E", () => {
   suiteTeardown(() => {
     fs.rmSync(path.join(workspaceDir, ".git"), { recursive: true });
     const samplePath = path.join(workspaceDir, "sample.py");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- test fixture workspace
     if (fs.existsSync(samplePath)) {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- test fixture workspace
       fs.unlinkSync(samplePath);
     }
   });
 
   test("trailing-whitespace hook removes trailing spaces on save", async () => {
     const filePath = path.join(workspaceDir, "sample.py");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- test fixture workspace
     fs.writeFileSync(filePath, "x = 1   \ny = 2\n");
 
     const doc = await openAndDirty(filePath);
@@ -115,8 +127,11 @@ suite("pre-commit extension E2E", () => {
       path.join(os.tmpdir(), "pre-commit-nofmt-"),
     );
     try {
-      fs.cpSync(path.join(FIXTURES_DIR, "nofmt"), isolated, { recursive: true });
+      fs.cpSync(path.join(FIXTURES_DIR, "nofmt"), isolated, {
+        recursive: true,
+      });
       const filePath = path.join(isolated, "test.py");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- temp dir from mkdtempSync
       fs.writeFileSync(filePath, "y = 2\n");
       const doc = await openAndDirty(filePath);
       await assertNoBufferChange(doc);
@@ -131,6 +146,7 @@ suite("pre-commit extension E2E", () => {
     );
     try {
       const filePath = path.join(isolated, "test.py");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- temp dir from mkdtempSync
       fs.writeFileSync(filePath, "z = 3\n");
       const doc = await openAndDirty(filePath);
       await assertNoBufferChange(doc);

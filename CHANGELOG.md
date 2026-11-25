@@ -1,4 +1,8 @@
-## [Unreleased]
+## [0.0.4]
+
+- Use openvsx trusted publishing
+- Format the code with prettier
+- Lint the code with eslint
 
 ## [0.0.3]
 
@@ -10,7 +14,6 @@
 ## [0.0.2]
 
 - Allow VSCode versions >=1.75.0 <2.0.0
-
 
 ## [0.0.1]
 

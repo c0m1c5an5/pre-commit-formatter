@@ -4,19 +4,20 @@ import * as fs from "fs";
 import * as cp from "child_process";
 import { load as yamlLoad } from "js-yaml";
 
-const FORMAT_PATTERN = /(^|[-_])format([-_]|$)/i;
+const FORMAT_PATTERN = /(?:^|[-_])format(?:[-_]|$)/i;
 
+// Shapes parsed from user-supplied YAML, so every collection may be missing.
 interface Hook {
   id: string;
   alias?: string;
 }
 
 interface Repo {
-  hooks: Hook[];
+  hooks?: Hook[];
 }
 
 interface PreCommitConfig {
-  repos: Repo[];
+  repos?: Repo[];
 }
 
 let outputChannel: vscode.OutputChannel;
@@ -38,8 +39,9 @@ function debug(message: string): void {
  */
 function findConfig(startDir: string): string | undefined {
   let dir = startDir;
-  while (true) {
+  for (;;) {
     const candidate = path.join(dir, ".pre-commit-config.yaml");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- fixed filename in an ancestor of the saved file
     if (fs.existsSync(candidate)) {
       return candidate;
     }
@@ -95,7 +97,9 @@ function runPreCommit(
       env["SKIP"] = skipIds.join(",");
     }
 
-    debug(`spawn: ${executable} run --files ${filePath} (cwd: ${configDir}, SKIP: ${env["SKIP"] ?? ""})`);
+    debug(
+      `spawn: ${executable} run --files ${filePath} (cwd: ${configDir}, SKIP: ${env["SKIP"] ?? ""})`,
+    );
 
     const proc = cp.spawn(executable, ["run", "--files", filePath], {
       cwd: configDir,
@@ -164,8 +168,10 @@ async function handleSave(document: vscode.TextDocument): Promise<void> {
 
   let config: PreCommitConfig;
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- path returned by findConfig
     const raw = fs.readFileSync(configPath, "utf-8");
-    config = yamlLoad(raw) as PreCommitConfig;
+    // An empty file parses to undefined; treat it as a config with no repos.
+    config = yamlLoad(raw) ?? {};
   } catch {
     debug(`failed to parse config`);
     return;
@@ -205,6 +211,7 @@ async function handleSave(document: vscode.TextDocument): Promise<void> {
       debug(`exit stderr: ${stderr}`);
     }
 
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- the file VS Code just saved
     const diskContent = fs.readFileSync(filePath, "utf-8");
     if (diskContent === document.getText()) {
       debug(`file unchanged after pre-commit`);
@@ -241,7 +248,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.workspace.onDidSaveTextDocument((doc) =>
       handleSave(doc).catch((err: unknown) => {
-        const msg = `[pre-commit] Unhandled error: ${err}`;
+        const msg = `[pre-commit] Unhandled error: ${String(err)}`;
         outputChannel.appendLine(msg);
         console.error(msg);
       }),
