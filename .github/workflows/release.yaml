@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     uses: ./.github/workflows/test.yaml
@@ -12,6 +15,10 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -34,7 +41,4 @@ jobs:
         run: pnpm run package
 
       - name: Publish to Open VSX Registry
-        uses: HaaLeo/publish-vscode-extension@ca5561daa085dee804bf9f37fe0165785a9b14db # v2
-        with:
-          pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          dependencies: false
+        run: pnpm exec ovsx publish --trusted-publishing --no-dependencies
