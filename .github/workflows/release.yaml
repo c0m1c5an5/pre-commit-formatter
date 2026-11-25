@@ -37,8 +37,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build Extension
-        run: pnpm run package
+      - name: Package Extension
+        run: pnpm exec vsce package --no-dependencies --out extension.vsix
+
+      - name: Publish to Visual Studio Marketplace
+        run: pnpm exec vsce publish --oidc --packagePath extension.vsix
 
       - name: Publish to Open VSX Registry
-        run: pnpm exec ovsx publish --trusted-publishing --no-dependencies
+        run: pnpm exec ovsx publish --trusted-publishing --packagePath extension.vsix

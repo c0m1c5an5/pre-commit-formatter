@@ -1,5 +1,12 @@
 .vscode/**
 .vscode-test/**
+.devcontainer/**
+.github/**
+.npmrc
+.prettierignore
+pnpm-lock.yaml
+pnpm-workspace.yaml
+*.vsix
 out/**
 node_modules/**
 src/**
