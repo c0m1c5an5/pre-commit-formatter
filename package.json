@@ -3,7 +3,7 @@
   "publisher": "c0m1c5an5",
   "displayName": "pre-commit",
   "description": "Run pre-commit as file formatter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -67,7 +67,7 @@
     "@types/node": "24.x",
     "@types/vscode": "^1.75.0",
     "@vscode/test-cli": "^0.0.15",
-    "@vscode/test-electron": "^3.0.0",
+    "@vscode/test-electron": "^3.1.0",
     "esbuild": "^0.28.1",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.8",
